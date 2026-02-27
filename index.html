@@ -541,8 +541,8 @@
                         
                         <div class="options" id="options-${caseData.id}">
                             ${caseData.options.map((option, index) => `
-                                <div class="option" id="option-${caseData.id}-${index}" onclick="selectOption(${caseData.id}, ${index})">
-                                    <input type="radio" id="q${caseData.id}-${index}" name="question-${caseData.id}" value="${index}">
+                                <div class="option" id="option-${caseData.id}-${index}">
+                                    <input type="radio" id="q${caseData.id}-${index}" name="question-${caseData.id}" value="${index}" onchange="selectOption(${caseData.id}, ${index})">
                                     <label for="q${caseData.id}-${index}">${String.fromCharCode(65 + index)}) ${option}</label>
                                 </div>
                             `).join('')}
@@ -579,13 +579,20 @@
         function submitAnswer(caseId) {
             const caseData = cases.find(c => c.id === caseId);
             const userAnswer = userAnswers[caseId];
+            
+            if (userAnswer === undefined) {
+                alert('Por favor, selecciona una opción antes de verificar.');
+                return;
+            }
+            
             const isCorrect = userAnswer === caseData.correctAnswer;
 
             // Deshabilitar todas las opciones
             const options = document.querySelectorAll(`#options-${caseId} .option`);
             options.forEach((option, index) => {
                 option.classList.add('disabled');
-                option.onclick = null;
+                const radio = option.querySelector('input[type="radio"]');
+                if (radio) radio.disabled = true;
                 
                 if (index === caseData.correctAnswer) {
                     option.classList.add('correct');
