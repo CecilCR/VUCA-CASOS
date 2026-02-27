@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casos VUCA: Gestión de restaurantes en crisis</title>
+    <meta property="og:title" content="Casos VUCA: Gestión de restaurantes">
+    <meta property="og:description" content="Analiza casos reales de crisis en restaurantes y aprende a combinar habilidades sociales, técnicas y digitales para navegar entornos VUCA.">
+    <meta property="og:type" content="website">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .intro-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .intro-section h2 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .intro-section p {
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .case-study {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 2px solid #e0e0e0;
+            display: none;
+        }
+
+        .case-study.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .case-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .case-header h3 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .case-label {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .case-section {
+            margin-bottom: 20px;
+        }
+
+        .case-section h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .case-section p {
+            line-height: 1.7;
+            color: #333;
+            text-align: justify;
+        }
+
+        .question-section {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .question-section h4 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .options {
+            margin-top: 15px;
+        }
+
+        .option {
+            padding: 16px;
+            margin-bottom: 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: #667eea;
+            transform: translateX(5px);
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            display: inline;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            animation: pulse 0.5s ease;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .option.correct::after {
+            content: "✓ Correcta";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .option.incorrect::after {
+            content: "✗ Incorrecta";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            line-height: 1.7;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            color: #721c24;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .feedback-text {
+            font-size: 15px;
+        }
+
+        .submit-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .submit-btn.show {
+            display: inline-block;
+        }
+
+        .submit-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .next-btn {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .next-btn:hover {
+            background: #0f2447;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.4);
+        }
+
+        .results {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results h2 {
+            color: #1e3c72;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            font-size: 56px;
+            font-weight: bold;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .results p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .progress-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .case-header h3 {
+                font-size: 20px;
+            }
+
+            .option label {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Casos VUCA: Gestión de restaurantes en crisis</h1>
+            <p>Analiza casos reales y combina habilidades para navegar la Volatilidad, Incertidumbre, Complejidad y Ambigüedad</p>
+        </div>
+
+        <div class="content">
+            <div class="intro-section" id="intro">
+                <h2>📋 Introducción al ejercicio</h2>
+                <p><strong>Objetivo:</strong> Desarrollar la capacidad de identificar y combinar habilidades sociales, técnicas y digitales para resolver crisis organizacionales en entornos VUCA.</p>
+                <p><strong>Metodología:</strong> Analizarás 4 casos críticos de gestión de restaurantes donde deberás seleccionar la combinación óptima de habilidades que resuelve tanto el problema técnico como el impacto humano.</p>
+                <p><strong>Instrucciones:</strong> Lee cada caso completo, identifica el tipo de crisis VUCA (Volatilidad, Incertidumbre, Complejidad o Ambigüedad) y selecciona la respuesta que mejor equilibre las dimensiones social, técnica y operativa.</p>
+                <button class="next-btn" onclick="startCases()">Comenzar con los casos →</button>
+            </div>
+
+            <div class="progress-indicator" id="progress" style="display: none;"></div>
+
+            <div id="cases-container">
+                <!-- Los casos se generarán dinámicamente -->
+            </div>
+
+            <div class="results" id="results">
+                <h2>🎯 Resultados de tu análisis</h2>
+                <div class="score" id="score">0/4</div>
+                <p id="performance-message"></p>
+                <button class="reset-btn" onclick="resetQuiz()">Volver a analizar los casos</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cases = [
+            {
+                id: 1,
+                title: "La turbulencia del cambio",
+                vucaType: "Volatilidad",
+                context: "Un paro logístico inesperado a nivel nacional ha bloqueado el puerto principal, impidiendo la llegada de los insumos importados clave (especias y proteínas especiales) de tu restaurante. El proveedor te informa que la disponibilidad de productos cambiará cada 48 horas según lo que logren rescatar de las bodegas.",
+                situation: "Debes cambiar el menú drásticamente cada dos días para sobrevivir y mantener el restaurante abierto. Tu equipo de cocina está al borde de la renuncia porque sienten que \"nunca aprenden el menú\", están frustrados por no alcanzar la maestría técnica y se sienten incapaces, lo que está destruyendo su moral y la calidad del producto final.",
+                question: "Ante esta Volatilidad externa (bloqueo logístico), ¿qué combinación de habilidades permitiría mantener la estabilidad emocional del equipo y la calidad operativa?",
+                options: [
+                    "Resolución de conflictos (Social) + Estandarización de procesos \"Base\" (Técnica): Organizar un espacio de diálogo para validar la frustración del equipo (Social) y, simultáneamente, implementar técnicas de cocina modular (Técnica), donde la base de las salsas y los fondos sea siempre la misma, permitiendo adaptar solo el componente final (el insumo variable) sin cambiar todo el método de trabajo.",
+                    "Comunicación asertiva (Social) + Uso de plataformas de gestión de tareas (Digital): Delegar la comunicación de los cambios a una App de gestión para que todos reciban la receta nueva al instante (Digital) y mantener una política de \"puertas abiertas\" para escuchar quejas (Social), sin modificar el ritmo de los cambios ni la complejidad de las recetas.",
+                    "Liderazgo motivacional (Social) + Gestión de horarios (Técnica): Ofrecer un bono de \"riesgo\" (Social) y obligar al personal a rotar turnos para cubrir la mayor carga laboral de las nuevas recetas, manteniendo el mismo ritmo de cambio constante para \"mantener la ventaja competitiva\"."
+                ],
+                correctAnswer: 0,
+                feedback: "El problema no es el menú; el problema es que el equipo perdió su ancla. El cambio constante de los ingredientes y el proceso destruye la competencia técnica y genera inseguridad entre los miembros del equipo. La opción A crea estabilidad mediante procesos modulares que permiten flexibilidad sin sacrificar el dominio técnico del equipo."
+            },
+            {
+                id: 2,
+                title: "El vacío de información",
+                vucaType: "Incertidumbre",
+                context: "El gobierno ha publicado un nuevo decreto de seguridad alimentaria con una redacción legal ambigua y confusa. Los inspectores han empezado a visitar restaurantes al azar, pero no hay claridad sobre qué interpretaciones aplicarán. Tu restaurante podría ser multado si no se adapta, pero la norma cambia de interpretación según el inspector de turno.",
+                situation: "El personal está paralizado por el miedo; no saben si su forma actual de trabajar es legal o no. Los rumores sobre cierres inminentes están destruyendo el clima laboral y la productividad.",
+                question: "Ante esta Incertidumbre externa (normativa ambigua), ¿qué combinación de habilidades permitiría mantener la seguridad operativa y la confianza del equipo?",
+                options: [
+                    "Escucha activa (Social) + Interpretación normativa y técnica (Técnica): Organizar una reunión para validar los miedos del equipo (Social) y, simultáneamente, realizar una lectura técnica profunda del decreto con asesoría legal/contable para crear una \"guía de cumplimiento interno\" basada en los puntos más seguros (Técnica), eliminando la especulación.",
+                    "Liderazgo inspirador (Social) + Uso de plataformas de gestión de tareas (Digital): Motivar al equipo diciéndoles que \"somos los mejores y nada nos pasará\" (Social) y asignar la tarea de leer el decreto a todos a través de la App de gestión (Digital) para que ellos mismos decidan qué hacer.",
+                    "Comunicación asertiva (Social) + Redacción de correos (Técnica/Ofimática): Enviar un comunicado oficial asegurando que \"todo está bajo control\" y pidiendo que se centren solo en el servicio al cliente (Social), usando un formato de correo profesional para proyectar autoridad (Técnica)."
+                ],
+                correctAnswer: 0,
+                feedback: "El problema es la falta de previsibilidad (Incertidumbre). La solución B y C no reducen la incertidumbre, solo la esconden. La opción A combate directamente la incertidumbre mediante entendimiento técnico del decreto, creando una guía clara que reduce la ambigüedad y restaura la confianza del equipo al tener parámetros definidos de acción."
+            },
+            {
+                id: 3,
+                title: "El nudo de interdependencia",
+                vucaType: "Complejidad",
+                context: "Debido a una tendencia de consumo masiva y repentina (causada por una red social), la demanda de \"pedidos para llevar\" se ha triplicado en 24 horas, pero la capacidad de la cocina es limitada.",
+                situation: "Si aceleras la cocina para cumplir con las apps de delivery, la calidad del plato cae y los clientes presenciales se quejan. Si priorizas a los presenciales, las apps te penalizan por demora. Si contratas más personal, los costos operativos destruyen tu margen de beneficio.",
+                question: "Ante esta Complejidad externa (shock de demanda interconectada), ¿qué combinación de habilidades permitiría balancear el sistema?",
+                options: [
+                    "Negociación colaborativa (Social) + Modelado de KPIs (Técnica): Reunir a los encargados de cocina, delivery y administración para negociar tiempos de entrega realistas (Social) y, al mismo tiempo, usar un cuadro de mando/Excel para modelar cuánto personal extra contratar sin quebrar el margen de utilidad (Técnica).",
+                    "Liderazgo carismático (Social) + Uso de redes sociales (Digital): Usar tus habilidades de influencia para pedir disculpas a los clientes por la demora (Social) y publicar en redes sociales que \"estamos trabajando duro\" (Digital), sin ajustar el proceso de producción.",
+                    "Gestión de conflictos (Social) + Uso de sistemas POS (Técnica): Gritar una instrucción clara de \"velocidad sobre calidad\" para terminar el conflicto (Social) y configurar el sistema POS para que solo acepte pedidos a una velocidad fija (Técnica)."
+                ],
+                correctAnswer: 0,
+                feedback: "La complejidad ocurre porque los KPI (Delivery vs. Presencial vs. Costo) están \"atados\". No puedes mejorar uno sin empeorar otro. La opción A reconoce esta interdependencia: usa negociación para alinear expectativas entre áreas (Social) y modelado cuantitativo para encontrar el punto de equilibrio donde se maximiza el beneficio sin sacrificar calidad ni margen."
+            },
+            {
+                id: 4,
+                title: "El código abierto",
+                vucaType: "Ambigüedad",
+                context: "El gobierno local lanza un nuevo \"Sello de Calidad Turística\". El decreto exige que los restaurantes brinden \"Servicio al cliente de alta calidad\" para obtener el sello, pero las métricas, estándares y procesos específicos para definir qué constituye dicha \"alta calidad\" son poco precisos. El decreto estipula que los inspectores, al momento de la visita, aplicarán además su \"criterio profesional\" para definir si el servicio cumplió con el estándar, basándose en su apreciación subjetiva.",
+                situation: "Tu equipo está en caos. Los meseros, buscando la \"alta calidad\", dan obsequios costosos que destruyen el margen; los cocineros creen que es innovar con platos complejos (lo que retrasa el servicio y genera filas de espera); y los administrativos, intentando cumplir con la \"eficiencia\" que presupone el estándar, reducen los tiempos de atención al mínimo, haciendo el trato frío e impersonal. Cada área está trabajando en una dirección distinta porque intentan adivinar qué es lo que el inspector considerará \"alta calidad\".",
+                question: "Ante esta ambigüedad externa (estándar vago y criterio subjetivo del inspector), ¿qué combinación de habilidades permitiría unificar el criterio y estabilizar el sistema?",
+                options: [
+                    "Comunicación asertiva (Social) + Definición de estándares operativos internos (Técnica): Facilitar un taller donde los líderes de área negocien un consenso sobre qué elementos de su servicio actual conforman la \"calidad\" (Social) y, simultáneamente, redactar un \"Manual de Estándares de Servicio\" con indicadores claros y medibles (ej: tiempo de respuesta, temperatura del plato, registro de incidencias) (Técnica), que servirá como argumento objetivo para defender la calidad ante cualquier inspector, independientemente de su criterio subjetivo.",
+                    "Liderazgo motivacional (Social) + Encuestas de satisfacción (Digital): Convocar al equipo para motivarlos a \"dar lo mejor de sí\" (Social) y lanzar una encuesta digital a los clientes cada semana (Digital) para que el público decida qué es calidad, dejando que la calificación promedio sea la única métrica de defensa.",
+                    "Gestión de conflictos (Social) + Contratación de asesoría legal (Técnica): Mediar en las peleas entre meseros, cocineros y administrativos para reducir la tensión (Social) y contratar a una firma de abogados para redactar una carta de protesta al gobierno solicitando que aclaren el decreto (Técnica), mientras el equipo sigue trabajando a ciegas esperando una respuesta."
+                ],
+                correctAnswer: 0,
+                feedback: "El problema de la ambigüedad no es el decreto en sí, sino la \"dispersión estratégica\" causada por interpretaciones diferentes del mismo concepto. La opción A combate la ambigüedad creando claridad interna: unifica el criterio mediante consenso (Social) y lo traduce en estándares medibles (Técnica) que dan coherencia operativa al equipo y permiten defender objetivamente la calidad ante criterios subjetivos externos."
+            }
+        ];
+
+        let currentCase = 0;
+        let score = 0;
+        let userAnswers = {};
+
+        function startCases() {
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('progress').style.display = 'block';
+            renderCase();
+        }
+
+        function renderCase() {
+            const container = document.getElementById('cases-container');
+            const caseData = cases[currentCase];
+            
+            updateProgress();
+            
+            container.innerHTML = `
+                <div class="case-study active">
+                    <div class="case-header">
+                        <div class="case-label">Caso ${caseData.id} de ${cases.length} • ${caseData.vucaType}</div>
+                        <h3>${caseData.title}</h3>
+                    </div>
+
+                    <div class="case-section">
+                        <h4>📍 Contexto</h4>
+                        <p>${caseData.context}</p>
+                    </div>
+
+                    <div class="case-section">
+                        <h4>⚠️ Situación</h4>
+                        <p>${caseData.situation}</p>
+                    </div>
+
+                    <div class="question-section">
+                        <h4>❓ Pregunta de análisis</h4>
+                        <p>${caseData.question}</p>
+                        
+                        <div class="options" id="options-${caseData.id}">
+                            ${caseData.options.map((option, index) => `
+                                <div class="option" id="option-${caseData.id}-${index}" onclick="selectOption(${caseData.id}, ${index})">
+                                    <input type="radio" id="q${caseData.id}-${index}" name="question-${caseData.id}" value="${index}">
+                                    <label for="q${caseData.id}-${index}">${String.fromCharCode(65 + index)}) ${option}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <button class="submit-btn" id="submit-${caseData.id}" onclick="submitAnswer(${caseData.id})">
+                            Verificar respuesta
+                        </button>
+
+                        <div class="feedback" id="feedback-${caseData.id}">
+                            <div class="feedback-title" id="feedback-title-${caseData.id}"></div>
+                            <div class="feedback-text" id="feedback-text-${caseData.id}"></div>
+                        </div>
+                    </div>
+
+                    ${currentCase < cases.length - 1 ? 
+                        '<button class="next-btn" id="next-btn" style="display: none;" onclick="nextCase()">Siguiente caso →</button>' :
+                        '<button class="next-btn" id="next-btn" style="display: none;" onclick="showResults()">Ver resultados finales →</button>'
+                    }
+                </div>
+            `;
+        }
+
+        function updateProgress() {
+            document.getElementById('progress').textContent = `Caso ${currentCase + 1} de ${cases.length}`;
+        }
+
+        function selectOption(caseId, optionIndex) {
+            userAnswers[caseId] = optionIndex;
+            const submitBtn = document.getElementById(`submit-${caseId}`);
+            submitBtn.classList.add('show');
+        }
+
+        function submitAnswer(caseId) {
+            const caseData = cases.find(c => c.id === caseId);
+            const userAnswer = userAnswers[caseId];
+            const isCorrect = userAnswer === caseData.correctAnswer;
+
+            // Deshabilitar todas las opciones
+            const options = document.querySelectorAll(`#options-${caseId} .option`);
+            options.forEach((option, index) => {
+                option.classList.add('disabled');
+                option.onclick = null;
+                
+                if (index === caseData.correctAnswer) {
+                    option.classList.add('correct');
+                } else if (index === userAnswer && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            // Mostrar retroalimentación
+            const feedback = document.getElementById(`feedback-${caseId}`);
+            const feedbackTitle = document.getElementById(`feedback-title-${caseId}`);
+            const feedbackText = document.getElementById(`feedback-text-${caseId}`);
+            
+            feedback.classList.add('show');
+            feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+            feedbackTitle.textContent = isCorrect ? '✓ ¡Excelente análisis!' : '✗ Respuesta incorrecta';
+            feedbackText.textContent = caseData.feedback;
+
+            if (isCorrect) {
+                score++;
+            }
+
+            // Ocultar botón de submit y mostrar siguiente
+            document.getElementById(`submit-${caseId}`).style.display = 'none';
+            document.getElementById('next-btn').style.display = 'block';
+
+            // Scroll suave al feedback
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function nextCase() {
+            currentCase++;
+            renderCase();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showResults() {
+            document.getElementById('cases-container').style.display = 'none';
+            document.getElementById('progress').style.display = 'none';
+            
+            const results = document.getElementById('results');
+            const scoreDisplay = document.getElementById('score');
+            const performanceMessage = document.getElementById('performance-message');
+
+            results.classList.add('show');
+            scoreDisplay.textContent = `${score}/${cases.length}`;
+
+            const percentage = (score / cases.length) * 100;
+            let message = '';
+
+            if (percentage === 100) {
+                message = '🏆 <strong>Dominio excepcional de gestión en crisis VUCA.</strong><br>Has demostrado una comprensión profunda de cómo equilibrar habilidades sociales, técnicas y digitales para resolver crisis complejas. Tu capacidad para identificar el tipo de crisis y aplicar la combinación óptima de competencias es sobresaliente.';
+            } else if (percentage >= 75) {
+                message = '🎯 <strong>Muy buen análisis estratégico.</strong><br>Comprendes los principios fundamentales de gestión en entornos VUCA. Revisa los casos donde la respuesta fue incorrecta para fortalecer tu comprensión de cómo las diferentes crisis (Volatilidad, Incertidumbre, Complejidad, Ambigüedad) requieren combinaciones específicas de habilidades.';
+            } else if (percentage >= 50) {
+                message = '📚 <strong>Conocimiento básico adquirido.</strong><br>Captas las ideas principales sobre gestión de crisis, pero te recomendamos profundizar en cómo identificar correctamente el tipo de crisis VUCA y qué combinación de habilidades (sociales, técnicas, digitales) es más efectiva en cada escenario.';
+            } else {
+                message = '💪 <strong>Es momento de reforzar conceptos.</strong><br>Te sugerimos revisar el material sobre entornos VUCA y la importancia de combinar habilidades blandas (sociales), duras (técnicas) y digitales de forma equilibrada. Cada tipo de crisis requiere un enfoque específico que atienda tanto la dimensión humana como la operativa.';
+            }
+
+            performanceMessage.innerHTML = message;
+        }
+
+        function resetQuiz() {
+            currentCase = 0;
+            score = 0;
+            userAnswers = {};
+            
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('cases-container').style.display = 'block';
+            document.getElementById('intro').style.display = 'block';
+            document.getElementById('progress').style.display = 'none';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
